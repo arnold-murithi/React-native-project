@@ -1,21 +1,21 @@
 import { Platform, Text, View, ImageBackground, StyleSheet, FlatList, KeyboardAvoidingView } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import bg from "../../../assets/images/BG.png"
 import Message from '../../components/Messages'
 import messages from "../../../assets/data/messages.json"
 import InputBox from '../../components/InputBox'
 
 const  ChatScreen = () => {
-
   const route = useRoute();
-  const navigation = useNavigation()
-
+  const navigation = useNavigation();
+  
   
 
   useEffect(()=>{
     navigation.setOptions({title:route.params.name})//If you click on a conversation the contact name appears at the top
   //dependency array to keep mount the component every time you navigate to a different conversation
+
   },[route.params.name]);
 
     return (

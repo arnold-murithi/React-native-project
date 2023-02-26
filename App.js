@@ -5,8 +5,13 @@ import { StyleSheet, Text, View } from 'react-native';
 //import Message from './src/components/Messages';
 import Navigator from './src/navigation';
 import { SafeAreaView } from 'react-native';
+import { Amplify } from 'aws-amplify';
+import awsconfig from './src/aws-exports'
+//import { withAuthenticator } from 'aws-amplify-react-native';
 
-export default function App() {
+Amplify.configure(awsconfig);
+
+const  App = () => {
   return (
     //safe area view ensures the the keyboard does not appear behind the notch
     <SafeAreaView edges={['bottom']} style={styles.container}>
@@ -27,3 +32,4 @@ const styles = StyleSheet.create({
     
   },
 });
+export default App;

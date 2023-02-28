@@ -3,6 +3,7 @@ import ChatsScreen from "../screens/ChatsScreens/ChatsScreen";
 import NotImplementedScreen from "../screens/ChatsScreens/NotImplementedScreen"/*shows a background image for the blank pages such as
  status, calls, camera and settings*/
  import {Ionicons, Entypo} from "@expo/vector-icons"//navigation icons
+ import SetttingsPage from "../screens/ChatsScreens/SetttingsPage";
 import React from "react"
 
 const Tab = createBottomTabNavigator();//creates navigation betweeen different pages
@@ -46,7 +47,7 @@ const MainTabNavigator = ()=>{
             })}
             />
             
-            <Tab.Screen name="Settings" component={NotImplementedScreen}
+            <Tab.Screen name="Settings" component={SetttingsPage}
             options={{tabBarIcon:({color,size})=><Ionicons name="settings-outline" 
             size={size} color={color}/>
             }}

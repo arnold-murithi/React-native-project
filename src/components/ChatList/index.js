@@ -2,20 +2,38 @@ import { Text, View, Image, StyleSheet, Pressable} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useEffect,useState } from "react";
+import { Auth } from "aws-amplify";
+import { UserAgent } from "amazon-cognito-identity-js";
 dayjs.extend(relativeTime);
 
 const ChatList = ({chat}) =>{
     const navigation = useNavigation();
+    const [user, setUser] = useState(null)
+
+    useEffect(()=>{
+        const fetchUser = async () =>{
+            const authUser = await Auth.currentAuthenticatedUser();
+        
+        //loop through the chat.users.items and find an unauthenticated uset
+    const userItem = chat.users.items.find(item => item.user.id !== authUser.attributes.sub);
+
+    setUser(userItem?.user)
+    //to check the users in the database
+    //console.log(user);
+        } 
+        fetchUser();   
+    },[])
 
     return(
-            <Pressable onPress={()=> navigation.navigate("Chat",{id:chat.id,name:chat.user.name})} style={styles.container}>
-                <Image source={{uri:chat.user.image}} style={styles.image}/>
+            <Pressable onPress={()=> navigation.navigate("Chat",{id:chat.id, name:user?.name})} style={styles.container}>
+                <Image source={{uri:user?.image}} style={styles.image}/>
                 <View style={styles.content}>
                     <View style={styles.row}>
-                    <Text style={styles.name}>{chat.user.name}</Text>
-                    <Text>{dayjs(chat.lastMessage.createdAt).fromNow(true)}</Text> 
+                    <Text style={styles.name}>{user?.name}</Text>
+                    <Text>{dayjs(chat.lastMessage?.createdAt).fromNow(true)}</Text> 
                     </View>
-                    <Text numberOfLines={1} style={styles.subTitle}>{chat.lastMessage.text}</Text>
+                    <Text numberOfLines={1} style={styles.subTitle}>{chat.lastMessage?.text}</Text>
                 </View>
             </Pressable>
     )

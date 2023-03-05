@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import ChatsScreen from "../screens/ChatsScreens/ChatsScreen";
+import ChatsScreen from "../screens/ChatingsScreen/ChatsScreen";
 import NotImplementedScreen from "../screens/ChatsScreens/NotImplementedScreen"/*shows a background image for the blank pages such as
  status, calls, camera and settings*/
  import {Ionicons, Entypo} from "@expo/vector-icons"//navigation icons
@@ -28,7 +28,7 @@ const MainTabNavigator = ()=>{
             />
             <Tab.Screen name="Chats" 
             component={ChatsScreen}
-            //optionss takes a function that returns a object
+            //options takes a function that returns a object
             //navigation parameter
             options={({navigation}) =>({
                 tabBarIcon:({color,size})=>(

@@ -20,7 +20,7 @@ useEffect(() =>{
   const authUser = await Auth.currentAuthenticatedUser({
     bypassCache:true,
   })
-  console.log(authUser);
+  //console.log(authUser);
   //query to the database using the authenticated user id(sub)
   const userData = await API.graphql(
     graphqlOperation(getUser,{id:authUser.attributes.sub})) //response
@@ -37,9 +37,10 @@ useEffect(() =>{
     status: "Hey there, I am using chatapp",
   };
 
-  const newUserResponse = await API.graphql(graphqlOperation
+   await API.graphql(graphqlOperation
     (createUser, {input:newUser}))
   }
+  
 
   syncUser();
 

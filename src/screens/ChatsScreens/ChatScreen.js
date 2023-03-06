@@ -1,16 +1,28 @@
-import { Platform, Text, View, ImageBackground, StyleSheet, FlatList, KeyboardAvoidingView } from 'react-native'
+import { Platform, Text, View, ImageBackground, StyleSheet, FlatList, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import bg from "../../../assets/images/BG.png"
 import Message from '../../components/Messages'
 import messages from "../../../assets/data/messages.json"
 import InputBox from '../../components/InputBox'
+import {API, graphqlOperation} from "aws-amplify";
+import { getChatRoom } from '../../graphql/queries'
 
 const  ChatScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+
+  const [chatRoom, setChatRoom] = useState(null);
   
-  
+  //console.log(route);
+
+  const chatroom = route.params.id;
+
+  useEffect(()=>{
+    API.graphql(graphqlOperation(getChatRoom,{id:chatroom})).then(
+      (result) => setChatRoom(result.data?.getChatRoom)
+    );
+  },[])
 
   useEffect(()=>{
     navigation.setOptions({title:route.params.name})//If you click on a conversation the contact name appears at the top
@@ -18,17 +30,23 @@ const  ChatScreen = () => {
 
   },[route.params.name]);
 
+  if (!chatRoom){
+    return <ActivityIndicator/>
+  }
+  
+  console.log(chatRoom.Messages.items)
+
     return (
       <KeyboardAvoidingView behaviour={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.ios=="ios" ? '60' : '90'} //specifying the distance betweeen the top of the key board and the chatting space
       style={styles.bg}>
       <ImageBackground source={bg} style={styles.bg}>
-        <FlatList data={messages} //flat list is used to display items in a scrollable view
+        <FlatList data={chatRoom.Messages.items} //flat list is used to display items in a scrollable view
         renderItem ={({item}) =><Message message={item}/>}
         style={styles.list}
         inverted
         />
-        <InputBox/>
+        <InputBox chatroom={chatRoom}/>
       </ImageBackground>
       </KeyboardAvoidingView>
     )

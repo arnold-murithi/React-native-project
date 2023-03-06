@@ -25,15 +25,17 @@ const ChatList = ({chat}) =>{
         fetchUser();   
     },[])
 
+    //console.log(chat);
+
     return(
             <Pressable onPress={()=> navigation.navigate("Chat",{id:chat.id, name:user?.name})} style={styles.container}>
                 <Image source={{uri:user?.image}} style={styles.image}/>
                 <View style={styles.content}>
                     <View style={styles.row}>
                     <Text style={styles.name}>{user?.name}</Text>
-                    <Text>{dayjs(chat.lastMessage?.createdAt).fromNow(true)}</Text> 
+                    <Text>{dayjs(chat.LastMessage?.createdAt).fromNow(true)}</Text> 
                     </View>
-                    <Text numberOfLines={1} style={styles.subTitle}>{chat.lastMessage?.text}</Text>
+                    <Text numberOfLines={1} style={styles.subTitle}>{chat.LastMessage?.text}</Text>
                 </View>
             </Pressable>
     )
